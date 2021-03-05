@@ -27,7 +27,7 @@ namespace YdyoOBS.Application.Donemler.Commands.UpdateDonem
             {
                 Donem entity;
 
-                if (request.Id.HasValue)
+                if (request.Id.HasValue && request.Id.Value > 0)
                 {
                     entity = await _context.Donemler.FindAsync(request.Id.Value);
                 }

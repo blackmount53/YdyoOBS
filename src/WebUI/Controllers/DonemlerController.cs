@@ -27,6 +27,14 @@ namespace YdyoOBS.WebUI.Controllers
         }
 
 
+        public IActionResult Yeni()
+        {
+            return View();
+        }
+
+
+        
+
         public async Task<IActionResult> Duzenle(int? id)
         {            
             return View(await _mediator.Send(new GetDonemByIdQuery() { Id = id.Value }));
@@ -34,7 +42,7 @@ namespace YdyoOBS.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Duzenle(DonemDto vm)
+        public async Task<IActionResult> UpsertDonem(DonemDto vm)
         {
 
             if (ModelState.IsValid)

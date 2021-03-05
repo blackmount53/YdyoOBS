@@ -1,13 +1,12 @@
 ﻿@model DonemDto
 @{ 
-    ViewData["Title"] = "Dönem Düzenle";
+    ViewData["Title"] = "Yeni Dönem";
 }
 
 <div class="row">
     <div class="col-md-6">
         <form asp-action="UpsertDonem" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
             <div class="card">
                 <div class="card-body">
                     
@@ -34,7 +33,7 @@
                 <div class="card-footer">
                     <div class="form-group row">
                         <div class="col-6">
-                            <button type="submit" class="btn btn-primary btn-block ml-2">Güncelle</button>
+                            <button type="submit" class="btn btn-primary btn-block ml-2">Ekle</button>
                         </div>
                         <div class="col-6">
                             <a asp-action="Index" class="btn btn-success btn-block ml-2">Geri Dön</a>
