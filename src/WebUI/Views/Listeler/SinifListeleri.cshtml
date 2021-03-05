@@ -1,0 +1,131 @@
+﻿@model List<SinifOgrenciDto>
+@{
+    ViewData["Title"] = "Sınıf Listeleri";
+    var i = 0;
+    string header = string.Empty;
+
+    if(ViewBag.SinifAdi!= null)
+    {
+        header = ViewBag.SinifAdi;
+    }
+
+    if (ViewBag.KurAdi!= null){
+        header += " ( " + ViewBag.KurAdi + " )";
+    }
+
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="SinifListeleri" method="get" id="searchForm">
+
+            <div class="row">
+                <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                        <select name="donemId" id="donemId" class="form-control" asp-items="ViewBag.DonemId">
+                            <option value="0">--Dönem Seçiniz--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <div class="form-group">
+                        <select name="sinifId" id="sinifId" class="form-control" asp-items="ViewBag.SinifId">
+                            <option value="0">--Sınıf Seçiniz--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="card-title text-bold"><i class="fa fa-user-cog"></i> @ViewBag.HocaAdi</h3>
+                    </div>
+                    <div class="col-6 text-right">                        
+                        <span class="pr-2" style="font-weight:bold;">@header</span>
+                    </div>
+                </div>
+               
+              
+            </div>
+            <div class="card-body">
+                @if (Model.Count() > 0)
+                {
+                   
+                    <table class="table" id="myTable">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <th>Öğrenci No</th>
+                                <th>Adı</th>
+                                <th>Soyadı</th>
+                                <th>Fakülte Adı</th>
+                                <th>Bölüm Adı</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.OgrenciNo</td>
+                                    <td>@item.Adi</td>
+                                    <td>@item.Soyadi</td>
+                                    <td>@item.FakulteAdi</td>
+                                    <td>@item.BolumAdi</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center text-danger">Sınıfa Kayıtlı herhangi bir Öğrenci kaydı bulunamadı.</p>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{ 
+
+    <script>
+        $(document).ready(function () {
+            $("#donemId").change(function () {
+                $("#searchForm").submit();
+            });
+            $("#sinifId").change(function () {
+                $("#searchForm").submit();
+            });
+
+
+            $("#myTable").DataTable({
+                responsive: true,
+                language: {
+                    // url:'https://cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json',
+                    url: '../json/Turkish.json',
+                },
+                paging: false,
+                searching: true,
+                autoWidth: true,
+                info: false,
+                ordering: true,
+                order:[[2,"asc"]],
+                columnDefs: [
+                    { type: 'turkish', targets: '_all' }
+                ]
+            });
+
+        });
+    </script>
+}

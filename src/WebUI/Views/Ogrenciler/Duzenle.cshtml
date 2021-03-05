@@ -1,0 +1,122 @@
+﻿@model OgrenciVM
+@{
+    ViewData["Title"] = "Öğrenci Düzenle";
+}
+
+<div class="row">
+    <div class="col-md-7">
+        <form asp-action="Duzenle" method="post">
+            <div class="card">
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="DonemId" />
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group row">
+                                <label asp-for="TCKNo" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="TCKNo" class="form-control" />
+                                    <span asp-validation-for="TCKNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="OgrNo" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="OgrNo" class="form-control" />
+                                    <span asp-validation-for="OgrNo" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label asp-for="Adi" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="Adi" class="form-control" />
+                                    <span asp-validation-for="Adi" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label asp-for="Soyadi" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="Soyadi" class="form-control" />
+                                    <span asp-validation-for="Soyadi" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label asp-for="SinifId" class="col-4"></label>
+                                <div class="col-8">
+                                    <select asp-for="SinifId" class="form-control" asp-items="ViewBag.SinifId">
+                                        <option>--Sınıf Seçiniz--</option>
+                                    </select>
+                                    <span asp-validation-for="SinifId" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-8 offset-4">
+                                    <div class="custom-control custom-checkbox">
+                                        <input asp-for="Aktif" class="custom-control-input" type="checkbox" />
+                                        <label asp-for="Aktif" class="custom-control-label"></label>
+                                    </div>
+                                </div>                              
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label asp-for="Cinsiyeti" class="col-4"></label>
+                                <div class="col-8">
+                                    @*<input asp-for="Cinsiyeti" class="form-control" />*@
+                                    <select asp-for="Cinsiyeti" class="form-control">
+                                        <option value="E">Erkek</option>
+                                        <option value="K">Kadin</option>
+                                    </select>
+                                    <span asp-validation-for="Cinsiyeti" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label asp-for="Telefon" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="Telefon" class="form-control" />
+                                    <span asp-validation-for="Telefon" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="Mobil" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="Mobil" class="form-control" />
+                                    <span asp-validation-for="Mobil" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="Eposta" class="col-4"></label>
+                                <div class="col-8">
+                                    <input asp-for="Eposta" class="form-control" />
+                                    <span asp-validation-for="Eposta" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary btn-block ml-2">Güncelle</button>
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="Index" class="btn btn-success btn-block ml-2" asp-route-donemId="@Model.DonemId">Geri Dön</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

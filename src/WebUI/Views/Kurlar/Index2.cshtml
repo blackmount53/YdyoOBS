@@ -1,0 +1,101 @@
+﻿@model KurListVM
+@{
+    ViewData["Title"] = "Kurlar";
+    int k = 0;
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-tools">
+            <a asp-action="Yeni" class="btn btn-primary"><i class="fa fa-plus"></i> Yeni Kur</a>
+        </div>
+    </div>
+    <div class="card-body table-responsive text-nowrap">
+
+        @if (Model.Kurlar.Count > 0)
+        {
+            <table class="table table-striped" id="myTable">
+                <thead>
+                    <tr class="table-info">
+                        <th>#</th>
+                        <th>Kur Adı</th>
+                        <th>Devamsızlık Saati</th>
+                        <th>Dönem Adı</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Kurlar)
+                    {
+                        k++;
+                        <tr>
+                            <td>@k</td>
+                            <td>@item.Adi</td>
+                            <td>@item.DevamsizlikSaati</td>
+                            <td>@item.DonemAdi</td>
+                            <td class="text-right">
+                                <partial name="_ButtonPartial" model="@item.Id" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <div page-model="Model.PagingInfo"
+                 page-action="Index"
+                 page-class="btn border" page-class-normal="btn btn-light"
+                 page-class-selected="btn btn-info active" class="btn-group">
+            </div>
+        }
+        else
+        {
+            <p class="text-center text-danger">Herhangi bir Kur kaydı bulunamadı.</p>
+        }
+
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#myTable").DataTable({
+                responsive: true,
+                language: {
+                    // url:'https://cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json',
+                    url: '../json/Turkish.json',
+                },
+                paging: false,
+                autoWidth: true,
+                info: false,
+                columnDefs: [
+                    { type: 'turkish', targets: '_all' }
+                ]
+            });
+        });
+    </script>
+
+
+    <script>
+        var save = '@TempData["save"]'
+        if (save != '') {
+           alertify.success(save);
+        }
+        var edit = '@TempData["edit"]'
+        if (edit != '') {
+            alertify.success(edit);
+        }
+        var del = '@TempData["del"]'
+        if (del != '') {
+           alertify.success(del);
+        }
+        var error = '@TempData["error"]'
+        if (error != '') {
+            alertify.error(error);
+        }
+    </script>
+
+}

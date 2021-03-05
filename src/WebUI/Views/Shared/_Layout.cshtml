@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"] - Yabancı Diller Yüksekokulu </title>
+    <partial name="_Styles" />
+</head>
+<body class="hold-transition sidebar-mini">
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section"></div>
+    </div>
+
+    <div class="wrapper">
+
+        @await Component.InvokeAsync("Header")
+        @await Component.InvokeAsync("Sidebar")
+
+        <div class="content-wrapper" id="contentWrapper">
+            <div class="content">
+                <div class="container-fluid pt-2">
+                    @await Component.InvokeAsync("Title")
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+
+        @await Component.InvokeAsync("Footer")
+        @await Component.InvokeAsync("FormModal")
+        @await Component.InvokeAsync("ImageModal")
+
+    </div>
+
+
+    <partial name="_Scripts" />
+    @*await Component.InvokeAsync("Notyf")*@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

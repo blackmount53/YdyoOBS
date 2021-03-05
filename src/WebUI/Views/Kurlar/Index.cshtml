@@ -1,0 +1,206 @@
+﻿@model PaginatedList<KurDto>
+@{
+    ViewData["Title"] = "Kurlar";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var active = "";
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-tools">
+            <a asp-action="Yeni" class="btn btn-primary"><i class="fa fa-plus"></i> Yeni Kur</a>
+        </div>
+    </div>
+    <div class="card-body table-responsive text-nowrap">
+
+        <form asp-action="Index" method="get" id="searhForm">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select name="donemId" id="donemId" class="form-control" asp-items="ViewBag.DonemId">
+                            <option value="0">--Dönem Seçiniz--</option>
+                        </select>
+                    </div>
+                </div>             
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </form>
+
+        @if (Model.Items.Count > 0)
+        {
+            <table class="table table-striped" id="myTable">
+                <thead>
+                    <tr class="table-info">
+                        <th>#</th>
+                        <th>Kur Adı</th>                       
+                        <th>Devamsızlık Saati</th>
+                        <th>Dönem Adı</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Adi</td>                            
+                            <td>@item.DevamsizlikSaati</td>
+                            <td>@item.DonemAdi</td>
+                            <td class="text-right">
+                                <partial name="_ButtonPartial" model="@item.Id" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <nav aria-label="page navigation mt-2">
+                <ul class="pagination">
+
+                    @{
+                        if (Model.PageIndex > 1)
+                        {
+
+                            <li class="page-item @prevDisabled">
+                                <a asp-action="Index"
+                                   asp-route-pageNo="1"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-donemId="@ViewBag.Donem"                                  
+                                   class="page-link ">
+                                    İlk
+                                </a>
+                            </li>
+
+                            <li class="page-item @prevDisabled">
+
+                                <a asp-action="Index"
+                                   asp-route-pageNo="@(Model.PageIndex - 1)"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-donemId="@ViewBag.Donem"                                  
+                                   class="page-link ">
+                                    Önceki
+                                </a>
+                            </li>
+                        }
+
+                        var startPage = Model.PageIndex - 5;
+                        var endPage = Model.PageIndex + 4;
+
+                        if (startPage <= 0)
+                        {
+                            endPage -= (startPage - 1);
+                            startPage = 1;
+                        }
+                        if (endPage > Model.TotalPages)
+                        {
+                            endPage = Model.TotalPages;
+                            if (endPage > 10)
+                            {
+                                startPage = endPage - 9;
+                            }
+                        }
+
+
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            active = Model.PageIndex == i ? "active" : "";
+
+                            <li class="page-item @active">
+                                <a asp-action="Index"
+                                   asp-route-pageNo="@i"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-donemId="@ViewBag.Donem"                                   
+                                   class="page-link">
+                                    @i
+                                </a>
+                            </li>
+                        }
+
+
+                        if (Model.PageIndex < Model.TotalPages)
+                        {
+                            <li class="page-item @nextDisabled">
+                                <a asp-action="Index"
+                                   asp-route-pageNo="@(Model.PageIndex + 1)"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-donemId="@ViewBag.Donem"                                   
+                                   class="page-link ">
+                                    Sonraki
+                                </a>
+                            </li>
+                            <li class="page-item @nextDisabled">
+                                <a asp-action="Index"
+                                   asp-route-pageNo="@(Model.TotalPages)"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-donemId="@ViewBag.Donem"                                   
+                                   class="page-link ">
+                                    Son
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </nav>
+
+        }
+        else
+        {
+            <p class="text-center text-danger">Herhangi bir Kur kaydı bulunamadı.</p>
+        }
+
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#myTable").DataTable({
+                responsive: true,
+                language: {
+                    // url:'https://cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json',
+                    url: '../json/Turkish.json',
+                },
+                paging: false,
+                searching: false,
+                autoWidth: true,
+                info: false,
+                columnDefs: [
+                    { type: 'turkish', targets: '_all' }
+                ]
+            });
+
+
+            $("#donemId").change(function () {
+                $('#searhForm').submit();
+            });
+
+
+        });
+
+        var save = '@TempData["save"]'
+        if (save != '') {
+           alertify.success(save);
+        }
+        var edit = '@TempData["edit"]'
+        if (edit != '') {
+            alertify.success(edit);
+        }
+        var del = '@TempData["del"]'
+        if (del != '') {
+           alertify.success(del);
+        }
+        var error = '@TempData["error"]'
+        if (error != '') {
+            alertify.error(error);
+        }
+    </script>
+
+}

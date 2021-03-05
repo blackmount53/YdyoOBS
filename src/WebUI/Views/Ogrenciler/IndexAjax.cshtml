@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Öğrenciler";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-tools">
+            <a asp-action="Yeni" class="btn btn-primary"><i class="fa fa-plus"></i> Yeni Sınıf</a>
+        </div>
+    </div>
+    <div class="card-body table-responsive text-nowrap py-2">
+
+        <table class="table table-hover display" style="width:100%;" id="myTable">
+            <thead>
+                <tr class="table-info">
+                    <th>#</th>
+                    <th>Öğrenci No</th>
+                    <th>Adı</th>
+                    <th>Soyadı</th>
+                    <th>Sınıf Adı</th>
+                    <th>Dönem Adı</th>
+                    <th>Fakülte</th>
+                    <th>Bölüm</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            $.ajax({
+                'url': "/Ogrenciler/GetOgrenciler",
+                'method': "GET",
+                'contentyType': 'application/json'
+            }).done(function (data) {
+                $('#myTable').DataTable({
+                    responsive: true,
+                    language: {
+                        // url:'https://cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json',
+                        url: '../json/Turkish.json',
+                    },
+                    data: data,
+                    columnDefs: [
+                        {
+                            targets: [0],
+                            visible: false,
+                            searchable: false,
+                        }
+                    ],
+                    columns: [
+                        { "data": "id" },
+                        { "data": "ogrNo" },
+                        { "data": "adi" },
+                        { "data": "soyadi" },
+                        { "data": "sinifAdi" },
+                        { "data": "donemAdi" },
+                        { "data": "fakulteAdi" },
+                        { "data": "bolumAdi" },
+                        {
+                            render: function (data, type, full, meat) {
+                                return '<a class="btn btn-primary" asp-action="Duzenle" asp-route-id=' + full.id + ' "><i class=" fa fa-edit"></i></a>&nbsp;<a class="btn btn-warning" asp-action="Sil" asp-route-id=' + full.id + ' "><i class="fa fa-trash"></i></a>'
+                            }
+                        }
+                    ]
+                });
+            });
+
+        });
+    </script>
+}
