@@ -1,0 +1,68 @@
+﻿@model SinifDto
+@{
+    ViewData["Title"] = "Sınıf Düzenle";
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="UpsertDonem" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="Adi"></label>
+                        </div>
+                        <div class="col-9">
+                            <input asp-for="Adi" class="form-control" />
+                            <span asp-validation-for="Adi" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="KurId">Kur Adı</label>
+                        </div>
+                        <div class="col-9">
+                            <select asp-for="KurId" class="form-control" asp-items="ViewBag.KurId"></select>
+                            <span asp-validation-for="KurId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="HocaId">Hoca Adı</label>
+                        </div>
+                        <div class="col-9">
+                            <select asp-for="HocaId" class="form-control" asp-items="ViewBag.HocaId"></select>
+                            <span asp-validation-for="HocaId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-9 offset-3">
+                            <div class="custom-control custom-checkbox">
+                                <input asp-for="Aktif" class="custom-control-input" type="checkbox" />
+                                <label asp-for="Aktif" class="custom-control-label"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary btn-block ml-2">Güncelle</button>
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="Index" class="btn btn-success btn-block ml-2">Geri Dön</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

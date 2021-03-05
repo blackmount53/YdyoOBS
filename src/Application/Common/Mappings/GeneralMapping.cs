@@ -46,7 +46,12 @@ namespace YdyoOBS.Application.Common.Mappings
                 .ForMember(o => o.KurAdi, opt => opt.MapFrom(s => s.Sinif.Kur.Adi))
                 .ForMember(o => o.HocaAdi, opt => opt.MapFrom(s => s.Sinif.Hoca.Adi + " " + s.Sinif.Hoca.Soyadi));
 
-                
+            CreateMap<Hoca, HocaDto>()
+                .ForMember(h => h.Adi, opt => opt.MapFrom(s => s.Adi))
+                .ForMember(h => h.Soyadi, opt => opt.MapFrom(s => s.Soyadi));
+
+
+
 
         }
     }

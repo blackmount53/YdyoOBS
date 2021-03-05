@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using YdyoOBS.Application.Common.Dto;
 using YdyoOBS.Application.Common.Models;
 using YdyoOBS.Application.Donemler.Queries.GetDonemlerList;
+using YdyoOBS.Application.Hocalar.Queries.GetHocalarList;
+using YdyoOBS.Application.Kurlar.Queries.GetKurlarList;
+using YdyoOBS.Application.Kurlar.Queries.GetKurListByDonemId;
+using YdyoOBS.Application.Siniflar.Queries.GetSinifId;
 using YdyoOBS.Application.Siniflar.Queries.GetSiniflarList;
 using YdyoOBS.Application.Siniflar.Queries.GetSiniflarPagedList;
 using YdyoOBS.Application.Siniflar.Queries.GetSiniflarWithPagination;
@@ -41,6 +45,28 @@ namespace YdyoOBS.WebUI.Controllers
 
             var siniflar = await _mediator.Send(new GetSiniflarWithPaginationQuery() { PageNumber = pageNo, PageSize = pageSize, DonemId = donemId });
             return View(siniflar);
+        }
+
+
+        public async Task<IActionResult> Duzenle(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            var model = await _mediator.Send(new GetSinifIdQuery { Id = id.Value });
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["KurId"] = new SelectList(await _mediator.Send(new GetKurListByDonemIdQuery { Id = model.DonemId.Value }),"Id","Adi");
+            ViewData["HocaId"] = new SelectList(await _mediator.Send(new GetHocalarListQuery()), "Id", "TamAdi", model.HocaId);
+
+            return View(model);
+
         }
 
 
